@@ -39,7 +39,7 @@
 !> the terms of any one of the MPL, the GPL or the LGPL.
 !>
 
-!> \example InterfaceExamples/Coupled-FiniteElasticity-FiniteElasticity/src/Coupled-FiniteElasticity-FiniteElasticityExample.f90
+!> \example InterfaceExamples/Coupled-FiniteElasticity-FiniteElasticity-LagrangeMultiplierMethod/src/Coupled-FiniteElasticity-FiniteElasticity-LagrangeMultiplierMethodExample.f90
 !! Example program which sets up a field in two regions using OpenCMISS calls.
 !! \par Latest Builds:
 !! \li <a href='http://autotest.bioeng.auckland.ac.nz/opencmiss-build/logs_x86_64-linux/InterfaceExamples/Coupled-FiniteElasticity-FiniteElasticity/build-intel'>Linux Intel Build</a>
