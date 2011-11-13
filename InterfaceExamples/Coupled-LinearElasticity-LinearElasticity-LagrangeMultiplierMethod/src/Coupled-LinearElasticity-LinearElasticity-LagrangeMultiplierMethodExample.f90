@@ -850,43 +850,6 @@ PROGRAM COUPLED_LINEARELASTICITY_LINEARELASTICITY
   PRINT *, ' == >> INITIALIZE INTERFACE GEOMETRIC FIELD FROM INTERFACE GENERATED MESH << == '
   CALL CMISSGeneratedMeshGeometricParametersCalculate(InterfaceGeometricField,InterfaceGeneratedMesh,Err)
 
-  !/todo Manually updated interface field to correct values as generated interface mesh for coupled 3D-3D problems doesn't work correctly
-  IF(NUMBER_GLOBAL_Z_ELEMENTS/=0) THEN
-    CALL CMISSFieldParameterSetUpdateStart(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,Err)
-
-    !Set geometric node coordinates (x)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,1,1, &
-      & 1.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,2,1, &
-      & 1.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,3,1, &
-      & 1.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,4,1, &
-      & 1.0_CMISSDP,Err)
-
-    !Set geometric node coordinates (y)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,1,2, &
-      & 0.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,2,2, &
-      & 1.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,3,2, &
-      & 0.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,4,2, &
-      & 1.0_CMISSDP,Err)
-
-    !Set geometric node coordinates (z)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,1,3, &
-      & 0.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,2,3, &
-      & 0.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,3,3, &
-      & 1.0_CMISSDP,Err)
-    CALL CMISSFieldParameterSetUpdateNode(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1,4,3, &
-      & 1.0_CMISSDP,Err)
-
-    CALL CMISSFieldParameterSetUpdateFinish(InterfaceGeometricField,CMISSFieldUVariableType,CMISSFieldValuesSetType,Err)
-  ENDIF
-
   !Create an interface condition between the two meshes
   PRINT *, ' == >> CREATING INTERFACE CONDITIONS << == '
   CALL CMISSInterfaceConditionTypeInitialise(InterfaceCondition,Err)
