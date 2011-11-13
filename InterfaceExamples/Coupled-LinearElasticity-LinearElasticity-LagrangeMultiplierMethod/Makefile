@@ -64,7 +64,7 @@ endif
 
 EXAMPLE_PATH= InterfaceExamples/
 
-EXAMPLE_NAME = Coupled-LinearElasticity-LinearElasticity
+EXAMPLE_NAME = Coupled-LinearElasticity-LinearElasticity-LagrangeMultiplierMethod
 
 include $(GLOBAL_ROOT)/ExampleMakefile
 
