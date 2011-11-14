@@ -446,7 +446,7 @@ PROGRAM LinearElasticity3DLagrangeBasis
   CALL CMISSBoundaryConditionsSetNode(BoundaryConditions,DependentField,CMISSFieldUVariableType,1,1,6,2, &
     & CMISSBoundaryConditionFixed,ZERO,Err)
 
-  !Fix nodes 1,2,3,4 at x=0
+  !Fix nodes 1,2,3,4 at z=0
   CALL CMISSBoundaryConditionsSetNode(BoundaryConditions,DependentField,CMISSFieldUVariableType,1,1,1,3, &
     & CMISSBoundaryConditionFixed,ZERO,Err)
   CALL CMISSBoundaryConditionsSetNode(BoundaryConditions,DependentField,CMISSFieldUVariableType,1,1,2,3, &
