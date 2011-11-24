@@ -102,9 +102,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   INTEGER(CMISSIntg), PARAMETER :: MaterialField2NumberOfVariables=1
   INTEGER(CMISSIntg), PARAMETER :: DependentField1NumberOfVariables=2
   INTEGER(CMISSIntg), PARAMETER :: DependentField2NumberOfVariables=2
-  INTEGER(CMISSIntg), PARAMETER :: MaterialField1NumberOfComponents=3
   INTEGER(CMISSIntg), PARAMETER :: MaterialField2NumberOfComponents=3
-  INTEGER(CMISSIntg), PARAMETER :: DependentField1NumberOfComponents=3
   INTEGER(CMISSIntg), PARAMETER :: DependentField2NumberOfComponents=3
   INTEGER(CMISSIntg), PARAMETER :: InterfaceUserNumber=1
   INTEGER(CMISSIntg), PARAMETER :: InterfaceConditionUserNumber=1
@@ -124,6 +122,8 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   INTEGER(CMISSIntg) :: EquationsSet1Index,EquationsSet2Index
   INTEGER(CMISSIntg) :: InterfaceConditionIndex
   INTEGER(CMISSIntg) :: Mesh1Index,Mesh2Index
+  INTEGER(CMISSIntg) :: MaterialField1NumberOfComponents
+  INTEGER(CMISSIntg) :: DependentField1NumberOfComponents
   INTEGER(CMISSIntg) :: NumberOfComputationalNodes,ComputationalNodeNumber
   INTEGER(CMISSIntg) :: y_element_idx,z_element_idx,mesh_local_y_node,mesh_local_z_node
   REAL(CMISSDP) :: XI2(2),XI3(3), HEIGHT,WIDTH,LENGTH
@@ -176,6 +176,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
 
   PENALTY=.FALSE.
   FORCE_BC=.TRUE. 
+  INCOMPRESSIBLE=.TRUE. 
   UNCOUPLED=.FALSE. 
   IF(UNCOUPLED.EQV..TRUE.) THEN
     NUMBER_GLOBAL_X_ELEMENTS=1
@@ -189,6 +190,13 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   NUMBER_GLOBAL_Y_ELEMENTS=1
   NUMBER_GLOBAL_Z_ELEMENTS=1
   INTERPOLATION_TYPE = CMISSBasisLinearLagrangeInterpolation
+  IF (INCOMPRESSIBLE.eqv..TRUE.) THEN
+    MaterialField1NumberOfComponents=2
+    DependentField1NumberOfComponents=4
+  ELSE
+    MaterialField1NumberOfComponents=3
+    DependentField1NumberOfComponents=3
+  ENDIF
 
   !Intialise OpenCMISS
   CALL CMISSInitialise(WorldCoordinateSystem,WorldRegion,Err)
@@ -425,7 +433,9 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   !Set the domain to be used by the field components.
   CALL CMISSFieldComponentMeshComponentSet(MaterialField1,CMISSFieldUVariableType,1,1,Err)
   CALL CMISSFieldComponentMeshComponentSet(MaterialField1,CMISSFieldUVariableType,2,1,Err)
-  CALL CMISSFieldComponentMeshComponentSet(MaterialField1,CMISSFieldUVariableType,3,1,Err)
+  IF (INCOMPRESSIBLE.eqv..FALSE.) THEN
+    CALL CMISSFieldComponentMeshComponentSet(MaterialField1,CMISSFieldUVariableType,3,1,Err)
+  ENDIF
   !Finish creating the first field
   CALL CMISSFieldCreateFinish(MaterialField1,Err)
 
@@ -451,7 +461,9 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   PRINT *, ' == >> INITIALIZE MATERIAL FIELD(1) << == '
   CALL CMISSFieldComponentValuesInitialise(MaterialField1,CMISSFieldUVariableType,CMISSFieldValuesSetType,1,1.0_CMISSDP,Err)
   CALL CMISSFieldComponentValuesInitialise(MaterialField1,CMISSFieldUVariableType,CMISSFieldValuesSetType,2,0.0_CMISSDP,Err)
-  CALL CMISSFieldComponentValuesInitialise(MaterialField1,CMISSFieldUVariableType,CMISSFieldValuesSetType,3,1.0e3_CMISSDP,Err)
+  IF (INCOMPRESSIBLE.eqv..FALSE.) THEN
+    CALL CMISSFieldComponentValuesInitialise(MaterialField1,CMISSFieldUVariableType,CMISSFieldValuesSetType,3,1.0e3_CMISSDP,Err)
+  ENDIF
 
   !Set Mooney-Rivlin constants c10 and c01 respectively on the second region
   PRINT *, ' == >> INITIALIZE MATERIAL FIELD(2) << == '
@@ -477,9 +489,16 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   CALL CMISSFieldComponentMeshComponentSet(DependentField1,CMISSFieldUVariableType,1,1,Err)
   CALL CMISSFieldComponentMeshComponentSet(DependentField1,CMISSFieldUVariableType,2,1,Err)
   CALL CMISSFieldComponentMeshComponentSet(DependentField1,CMISSFieldUVariableType,3,1,Err)
+  IF (INCOMPRESSIBLE) THEN
+    CALL CMISSFieldComponentInterpolationSet(DependentField1,CMISSFieldUVariableType,4,CMISSFieldElementBasedInterpolation,Err)
+  ENDIF
   CALL CMISSFieldComponentMeshComponentSet(DependentField1,CMISSFieldDelUDelNVariableType,1,1,Err)
   CALL CMISSFieldComponentMeshComponentSet(DependentField1,CMISSFieldDelUDelNVariableType,2,1,Err)
   CALL CMISSFieldComponentMeshComponentSet(DependentField1,CMISSFieldDelUDelNVariableType,3,1,Err)
+  IF (INCOMPRESSIBLE) THEN
+    CALL CMISSFieldComponentInterpolationSet(DependentField1,CMISSFieldDelUDelNVariableType,4, &
+      & CMISSFieldElementBasedInterpolation,Err)
+  ENDIF
   !Finish creating the first field
   CALL CMISSFieldCreateFinish(DependentField1,Err)
 
@@ -514,6 +533,9 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
     & 2,DependentField1,CMISSFieldUVariableType,CMISSFieldValuesSetType,2,Err)
   CALL CMISSFieldParametersToFieldParametersComponentCopy(GeometricField1,CMISSFieldUVariableType,CMISSFieldValuesSetType, &
     & 3,DependentField1,CMISSFieldUVariableType,CMISSFieldValuesSetType,3,Err)
+  IF (INCOMPRESSIBLE) THEN
+    CALL CMISSFieldComponentValuesInitialise(DependentField1,CMISSFieldUVariableType,CMISSFieldValuesSetType,4,-8.0_CMISSDP,Err)
+  ENDIF
 
   !Initialise dependent field from undeformed geometry and displacement bcs and set hydrostatic pressure
   PRINT *, ' == >> INITIALIZE DEPENDENT FIELD(2) << == '
@@ -529,9 +551,15 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   CALL CMISSFieldTypeInitialise(EquationsSetField1,Err)
   CALL CMISSEquationsSetTypeInitialise(EquationsSet1,Err)
   !Set the equations set to be a Finite Elasticity problem
-  CALL CMISSEquationsSetCreateStart(EquationsSet1UserNumber,Region1,FibreField1,CMISSEquationsSetElasticityClass, &
-    & CMISSEquationsSetFiniteElasticityType,CMISSEquationsSetCompressibleFiniteElasticitySubtype,EquationsSetField1UserNumber,&
-    & EquationsSetField1,EquationsSet1,Err)
+  IF (INCOMPRESSIBLE) THEN
+    CALL CMISSEquationsSetCreateStart(EquationsSet1UserNumber,Region1,FibreField1,CMISSEquationsSetElasticityClass, &
+      & CMISSEquationsSetFiniteElasticityType,CMISSEquationsSetNoSubtype,EquationsSetField1UserNumber,&
+      & EquationsSetField1,EquationsSet1,Err)
+  ELSE
+    CALL CMISSEquationsSetCreateStart(EquationsSet1UserNumber,Region1,FibreField1,CMISSEquationsSetElasticityClass, &
+      & CMISSEquationsSetFiniteElasticityType,CMISSEquationsSetCompressibleFiniteElasticitySubtype,EquationsSetField1UserNumber,&
+      & EquationsSetField1,EquationsSet1,Err)
+  ENDIF
   !Finish creating the equations set
   CALL CMISSEquationsSetCreateFinish(EquationsSet1,Err)
 
@@ -923,6 +951,10 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
       & CMISSBoundaryConditionFixed,0.0_CMISSDP,Err)
     CALL CMISSBoundaryConditionsAddNode(BoundaryConditions,LagrangeField,CMISSFieldUVariableType,1,1,3,2, &
       & CMISSBoundaryConditionFixed,0.0_CMISSDP,Err)
+    IF (INCOMPRESSIBLE) THEN
+      CALL CMISSBoundaryConditionsAddElement(BoundaryConditions,LagrangeField,CMISSFieldUVariableType,1,4, &
+        & CMISSBoundaryConditionFixed,0.0_CMISSDP,Err)
+    ENDIF
 
   ELSE
     !============================================================================================================================

@@ -47,7 +47,7 @@
      4.  #Values=1
       Value indices:     1
       Scale factor indices:    4
- 2) Lambda, field,  rectangular cartesian, #Components=3
+ 2) Lambda, field,  rectangular cartesian, #Components=4
    1.   l.Lagrange*l.Lagrange, no modify, standard node based.
      #Nodes= 4
      1.  #Values=1
@@ -90,7 +90,9 @@
      4.  #Values=1
       Value indices:     1
       Scale factor indices:    4
- 3) Lambda RHS, field,  rectangular cartesian, #Components=3
+   4.   l.Lagrange*l.Lagrange, no modify, grid based.
+     #xi1=1, #xi2=1
+ 3) Lambda RHS, field,  rectangular cartesian, #Components=4
    1.   l.Lagrange*l.Lagrange, no modify, standard node based.
      #Nodes= 4
      1.  #Values=1
@@ -133,7 +135,12 @@
      4.  #Values=1
       Value indices:     1
       Scale factor indices:    4
+   4.   l.Lagrange*l.Lagrange, no modify, grid based.
+     #xi1=1, #xi2=1
  Element:            1 0 0
+   Values:
+     0.0000000000000000E+00   0.0000000000000000E+00   0.0000000000000000E+00   0.0000000000000000E+00
+     0.0000000000000000E+00   0.0000000000000000E+00   0.0000000000000000E+00   0.0000000000000000E+00
    Nodes:
            1           2           3           4
    Scale factors:
