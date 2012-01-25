@@ -112,10 +112,8 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   
   !Program variables
 
-  INTEGER(CMISSIntg) :: NUMBER_OF_ARGUMENTS,ARGUMENT_LENGTH,STATUS
   INTEGER(CMISSIntg) :: NUMBER_GLOBAL_X_ELEMENTS,NUMBER_GLOBAL_Y_ELEMENTS,NUMBER_GLOBAL_Z_ELEMENTS
   INTEGER(CMISSIntg) :: INTERPOLATION_TYPE,NUMBER_OF_GAUSS_XI,NUMBER_OF_NODE_XI
-  CHARACTER(LEN=255) :: COMMAND_ARGUMENT
 
   INTEGER(CMISSIntg) :: EquationsSet1Index,EquationsSet2Index
   INTEGER(CMISSIntg) :: InterfaceConditionIndex
@@ -138,14 +136,13 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   TYPE(CMISSFieldType) :: GeometricField1,GeometricField2,InterfaceGeometricField,DependentField1,DependentField2,LagrangeField, &
     & EquationsSetField1,EquationsSetField2,PenaltyField
   TYPE(CMISSFieldType) :: FibreField1,FibreField2,MaterialField1,MaterialField2
-  TYPE(CMISSFieldsType) :: Fields1,Fields2,Fields3,InterfaceFields
+  TYPE(CMISSFieldsType) :: Fields1,Fields2,Fields3
   TYPE(CMISSGeneratedMeshType) :: GeneratedMesh1,GeneratedMesh2,InterfaceGeneratedMesh
   TYPE(CMISSMeshType) :: Mesh1,Mesh2,InterfaceMesh
   TYPE(CMISSInterfaceMeshConnectivityType) :: InterfaceMeshConnectivity
   TYPE(CMISSInterfaceType) :: Interface
   TYPE(CMISSInterfaceConditionType) :: InterfaceCondition
   TYPE(CMISSInterfaceEquationsType) :: InterfaceEquations
-  TYPE(CMISSNodesType) :: Nodes
   TYPE(CMISSProblemType) :: CoupledProblem
   TYPE(CMISSRegionType) :: Region1,Region2,WorldRegion
   TYPE(CMISSSolverType) :: NonLinearSolver,LinearSolver

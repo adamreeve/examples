@@ -114,10 +114,8 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   
   !Program variables
 
-  INTEGER(CMISSIntg) :: NUMBER_OF_ARGUMENTS,ARGUMENT_Length,STATUS
   INTEGER(CMISSIntg) :: NumberGlobalXElements,NumberGlobalYElements,NumberGlobalZElements
   INTEGER(CMISSIntg) :: DisplacementInterpolationType,PressureInterpolationType,NumberOfGaussXi,NumberOfNodeXi
-  CHARACTER(LEN=255) :: COMMAND_ARGUMENT
 
   INTEGER(CMISSIntg) :: EquationsSet1Index,EquationsSet2Index
   INTEGER(CMISSIntg) :: InterfaceConditionIndex
@@ -128,7 +126,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   INTEGER(CMISSIntg) :: y_element_idx,z_element_idx,mesh_local_y_node,mesh_local_z_node
   INTEGER(CMISSIntg) :: FrontNodeGroup(4),BackNodeGroup(4),Side4NodeGroup(4),Side6NodeGroup(6)
   INTEGER(CMISSIntg) :: Bottom4NodeGroup(4),Bottom6NodeGroup(6),node_idx,node,component
-  REAL(CMISSDP) :: XI2(2),XI3(3), Height,Width,Length
+  REAL(CMISSDP) :: XI3(3), Height,Width,Length
   LOGICAL :: HydrostaticPressureBasis,Uncoupled,ForceBoundaryConditions,Incompressible1,Incompressible2,PenaltyMethod
 
   !CMISS variables
@@ -143,14 +141,13 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   TYPE(CMISSFieldType) :: GeometricField1,GeometricField2,InterfaceGeometricField,DependentField1,DependentField2,LagrangeField, &
     & EquationsSetField1,EquationsSetField2,PenaltyField
   TYPE(CMISSFieldType) :: FibreField1,FibreField2,MaterialField1,MaterialField2
-  TYPE(CMISSFieldsType) :: Fields1,Fields2,Fields3,InterfaceFields
+  TYPE(CMISSFieldsType) :: Fields1,Fields2,Fields3
   TYPE(CMISSGeneratedMeshType) :: GeneratedMesh1,GeneratedMesh2,InterfaceGeneratedMesh
   TYPE(CMISSMeshType) :: Mesh1,Mesh2,InterfaceMesh
   TYPE(CMISSInterfaceMeshConnectivityType) :: InterfaceMeshConnectivity
   TYPE(CMISSInterfaceType) :: Interface
   TYPE(CMISSInterfaceConditionType) :: InterfaceCondition
   TYPE(CMISSInterfaceEquationsType) :: InterfaceEquations
-  TYPE(CMISSNodesType) :: Nodes
   TYPE(CMISSProblemType) :: CoupledProblem
   TYPE(CMISSRegionType) :: Region1,Region2,WorldRegion
   TYPE(CMISSSolverType) :: NonLinearSolver,LinearSolver
