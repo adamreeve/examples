@@ -712,7 +712,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   PRINT *, ' == >> CREATING INTERFACE MESHES CONNECTIVITY << == '
   CALL CMISSInterfaceMeshConnectivity_Initialise(InterfaceMeshConnectivity,Err)
   CALL CMISSInterfaceMeshConnectivity_CreateStart(Interface,InterfaceMesh,InterfaceMeshConnectivity,Err)
-  CALL CMISSInterfaceMeshConnectivity_SetBasis(InterfaceMeshConnectivity,InterfaceMappingBasis,Err)
+  CALL CMISSInterfaceMeshConnectivity_BasisSet(InterfaceMeshConnectivity,InterfaceMappingBasis,Err)
   SELECT CASE(InterpolationType)
   CASE(1,4)
     NumberOfNodeXi=2

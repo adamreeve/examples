@@ -589,7 +589,7 @@ PROGRAM THREEDCOUPLEDLAPLACE
   PRINT *, ' == >> CREATING INTERFACE MESHES CONNECTIVITY << == '
   CALL CMISSInterfaceMeshConnectivity_Initialise(InterfaceMeshConnectivity,Err)
   CALL CMISSInterfaceMeshConnectivity_CreateStart(Interface,InterfaceMesh,InterfaceMeshConnectivity,Err)
-  CALL CMISSInterfaceMeshConnectivity_SetBasis(InterfaceMeshConnectivity,InterfaceMappingBasis,Err)
+  CALL CMISSInterfaceMeshConnectivity_BasisSet(InterfaceMeshConnectivity,InterfaceMappingBasis,Err)
 
   DO ic_idx=1,CMX%NUMBER_OF_COUPLINGS
     !Map the interface element to the elements in mesh 1

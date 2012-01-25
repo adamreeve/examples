@@ -691,7 +691,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITYMEMBRANE
   PRINT *, ' == >> CREATING INTERFACE MESHES CONNECTIVITY << == '
   CALL CMISSInterfaceMeshConnectivity_Initialise(InterfaceMeshConnectivity,Err)
   CALL CMISSInterfaceMeshConnectivity_CreateStart(Interface,InterfaceMesh,InterfaceMeshConnectivity,Err)
-  CALL CMISSInterfaceMeshConnectivity_SetBasis(InterfaceMeshConnectivity,InterfaceMappingBasis,Err)
+  CALL CMISSInterfaceMeshConnectivity_BasisSet(InterfaceMeshConnectivity,InterfaceMappingBasis,Err)
   !Map the interface element to the elements in mesh 1
   CALL CMISSInterfaceMeshConnectivity_ElementNumberSet(InterfaceMeshConnectivity,1,Mesh1Index,1,Err)
   XI3 = [ 1.0_CMISSDP, 0.0_CMISSDP, 0.0_CMISSDP ]
