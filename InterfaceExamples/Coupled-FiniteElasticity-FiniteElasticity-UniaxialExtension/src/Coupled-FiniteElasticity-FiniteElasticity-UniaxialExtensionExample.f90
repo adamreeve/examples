@@ -125,7 +125,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   INTEGER(CMISSIntg) :: NumberOfComputationalNodes,ComputationalNodeNumber
   INTEGER(CMISSIntg) :: y_element_idx,z_element_idx,mesh_local_y_node,mesh_local_z_node
   INTEGER(CMISSIntg) :: FrontNodeGroup(4),BackNodeGroup(4),Side4NodeGroup(4),Side6NodeGroup(6)
-  INTEGER(CMISSIntg) :: Bottom4NodeGroup(4),Bottom6NodeGroup(6),node_idx,node,component
+  INTEGER(CMISSIntg) :: Bottom4NodeGroup(4),Bottom6NodeGroup(6),node_idx,node,component,LoadSteps
   REAL(CMISSDP) :: XI3(3), Height,Width,Length
   LOGICAL :: HydrostaticPressureBasis,Uncoupled,ForceBoundaryConditions,Incompressible1,Incompressible2,PenaltyMethod
 
@@ -220,6 +220,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
     MaterialField2NumberOfComponents=3
     DependentField2NumberOfComponents=3
   ENDIF
+  LoadSteps=1
 
   !Intialise OpenCMISS
   CALL CMISSInitialise(WorldCoordinateSystem,WorldRegion,Err)
@@ -1013,7 +1014,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   CALL CMISSProblem_ControlLoopCreateStart(CoupledProblem,Err)
   CALL CMISSControlLoop_Initialise(ControlLoop,Err)
   CALL CMISSProblem_ControlLoopGet(CoupledProblem,CMISS_CONTROL_LOOP_NODE,ControlLoop,Err)
-  CALL CMISSControlLoop_MaximumIterationsSet(ControlLoop,1,Err)
+  CALL CMISSControlLoop_MaximumIterationsSet(ControlLoop,LoadSteps,Err)
   !Finish creating the problem control loop
   CALL CMISSProblem_ControlLoopCreateFinish(CoupledProblem,Err)
  
