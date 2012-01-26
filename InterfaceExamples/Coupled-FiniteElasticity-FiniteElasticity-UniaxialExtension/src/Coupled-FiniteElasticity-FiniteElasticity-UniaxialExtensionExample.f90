@@ -602,9 +602,9 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   CALL CMISSField_ComponentMeshComponentSet(DependentField1,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,2,1,Err)
   CALL CMISSField_ComponentMeshComponentSet(DependentField1,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,3,1,Err)
   IF (Incompressible1.eqv..TRUE.) THEN
-    CALL CMISSField_ComponentMeshComponentSet(DependentField1,CMISS_FIELD_U_VARIABLE_TYPE,4,2,Err)
-    CALL CMISSField_ComponentMeshComponentSet(DependentField1,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,4,2,Err)
     IF(HydrostaticPressureBasis) THEN
+      CALL CMISSField_ComponentMeshComponentSet(DependentField1,CMISS_FIELD_U_VARIABLE_TYPE,4,2,Err)
+      CALL CMISSField_ComponentMeshComponentSet(DependentField1,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,4,2,Err)
       !Set the pressure to be nodally based and use the second mesh component if required
       CALL CMISSField_ComponentInterpolationSet(DependentField1,CMISS_FIELD_U_VARIABLE_TYPE,4, &
         & CMISS_FIELD_NODE_BASED_INTERPOLATION,Err)
@@ -647,9 +647,9 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
   CALL CMISSField_ComponentMeshComponentSet(DependentField2,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,2,1,Err)
   CALL CMISSField_ComponentMeshComponentSet(DependentField2,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,3,1,Err)
   IF (Incompressible2.eqv..TRUE.) THEN
-    CALL CMISSField_ComponentMeshComponentSet(DependentField2,CMISS_FIELD_U_VARIABLE_TYPE,4,2,Err)
-    CALL CMISSField_ComponentMeshComponentSet(DependentField2,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,4,2,Err)
     IF(HydrostaticPressureBasis) THEN
+      CALL CMISSField_ComponentMeshComponentSet(DependentField2,CMISS_FIELD_U_VARIABLE_TYPE,4,2,Err)
+      CALL CMISSField_ComponentMeshComponentSet(DependentField2,CMISS_FIELD_DELUDELN_VARIABLE_TYPE,4,2,Err)
       !Set the pressure to be nodally based and use the second mesh component if required
       CALL CMISSField_ComponentInterpolationSet(DependentField2,CMISS_FIELD_U_VARIABLE_TYPE,4, &
         & CMISS_FIELD_NODE_BASED_INTERPOLATION,Err)
@@ -1185,7 +1185,7 @@ PROGRAM COUPLEDFINITEELASTICITYFINITEELASTICITY
             & CMISS_GLOBAL_DERIV_S1_S2,node,component,CMISS_BOUNDARY_CONDITION_FIXED,0.0_CMISSDP,Err)
         ENDIF
       ENDDO
-        IF ((Incompressible1.eqv..TRUE.) .AND. (Incompressible2.eqv..TRUE.)) THEN
+      IF (HydrostaticPressureBasis .AND. Incompressible1 .AND. Incompressible2) THEN
         component=4
         CALL CMISSBoundaryConditions_SetNode(BoundaryConditions,LagrangeField,CMISS_FIELD_U_VARIABLE_TYPE,1, &
           & CMISS_NO_GLOBAL_DERIV,node,component,CMISS_BOUNDARY_CONDITION_FIXED,0.0_CMISSDP,Err)

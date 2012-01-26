@@ -32,8 +32,7 @@ gfx modify g_element "Region2" lines select_on material green selected_material 
 
 gfx create window 1
 
-gfx create axes length 5 material default
-gfx draw axes
+gfx modify g_element "/" point  glyph axes general size "1.5*1.5*1.5" centre 0,0,0 font default select_on material default selected_material default_selected;
 
 gfx edit scene
 gfx modify window 1 set antialias 2
