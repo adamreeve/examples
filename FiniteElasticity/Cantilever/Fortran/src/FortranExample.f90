@@ -84,6 +84,7 @@ PROGRAM CANTILEVEREXAMPLE
   INTEGER(CMISSIntg), PARAMETER :: FieldMaterialUserNumber=3
   INTEGER(CMISSIntg), PARAMETER :: FieldDependentUserNumber=4
   INTEGER(CMISSIntg), PARAMETER :: FieldSourceUserNumber=5
+  INTEGER(CMISSIntg), PARAMETER :: StrainFieldUserNumber=7
   INTEGER(CMISSIntg), PARAMETER :: EquationsSetFieldUserNumber=6
   INTEGER(CMISSIntg), PARAMETER :: EquationSetUserNumber=1
   INTEGER(CMISSIntg), PARAMETER :: ProblemUserNumber=1
@@ -107,7 +108,7 @@ PROGRAM CANTILEVEREXAMPLE
   TYPE(CMISSDecompositionType) :: Decomposition
   TYPE(CMISSEquationsType) :: Equations
   TYPE(CMISSEquationsSetType) :: EquationsSet
-  TYPE(CMISSFieldType) :: GeometricField,FibreField,MaterialField,DependentField,SourceField,EquationsSetField
+  TYPE(CMISSFieldType) :: GeometricField,FibreField,MaterialField,DependentField,SourceField,EquationsSetField, StrainField
   TYPE(CMISSFieldsType) :: Fields
   TYPE(CMISSGeneratedMeshType) :: GeneratedMesh
   TYPE(CMISSProblemType) :: Problem
@@ -446,6 +447,24 @@ PROGRAM CANTILEVEREXAMPLE
 
   !Solve problem
   CALL CMISSProblem_Solve(Problem,Err)
+
+  !Create a field to store the strain solution
+  CALL CMISSField_Initialise(StrainField,Err)
+  CALL CMISSField_CreateStart(StrainFieldUserNumber,Region,StrainField,Err)
+  CALL CMISSField_MeshDecompositionSet(StrainField,Decomposition,Err)
+  CALL CMISSField_TypeSet(StrainField,CMISS_FIELD_GENERAL_TYPE,Err)
+  CALL CMISSField_GeometricFieldSet(StrainField,GeometricField,Err)
+  CALL CMISSField_ScalingTypeSet(StrainField,ScalingType,Err)
+  CALL CMISSField_VariableTypesSet(StrainField,[CMISS_FIELD_U_VARIABLE_TYPE],Err)
+  CALL CMISSField_VariableLabelSet(StrainField,CMISS_FIELD_U_VARIABLE_TYPE,"Strain",Err)
+  CALL CMISSField_NumberOfComponentsSet(StrainField,CMISS_FIELD_U_VARIABLE_TYPE,6,Err)
+  DO component_idx=1,6
+    CALL CMISSField_ComponentInterpolationSet(StrainField,CMISS_FIELD_U_VARIABLE_TYPE,component_idx, &
+      & CMISS_FIELD_GAUSS_POINT_BASED_INTERPOLATION,Err)
+  END DO
+  CALL CMISSField_CreateFinish(StrainField,Err)
+  !Calculate the gauss point based strain field
+  CALL CMISSEquationsSet_StrainCalculate(EquationsSet,StrainField,CMISS_Field_U_Variable_Type,Err)
 
   !Output solution
   CALL CMISSFields_Initialise(Fields,Err)
