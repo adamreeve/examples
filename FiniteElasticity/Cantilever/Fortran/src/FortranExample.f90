@@ -464,7 +464,8 @@ PROGRAM CANTILEVEREXAMPLE
   END DO
   CALL CMISSField_CreateFinish(StrainField,Err)
   !Calculate the gauss point based strain field
-  CALL CMISSEquationsSet_StrainCalculate(EquationsSet,StrainField,CMISS_Field_U_Variable_Type,Err)
+  CALL CMISSEquationsSet_CalculateDerived(EquationsSet,StrainField,CMISS_Field_U_Variable_Type, &
+    & CMISS_EQUATIONS_SET_OUTPUT_STRAIN,Err)
 
   !Output solution
   CALL CMISSFields_Initialise(Fields,Err)
