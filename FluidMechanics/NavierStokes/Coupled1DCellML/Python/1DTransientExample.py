@@ -1,3 +1,4 @@
+from __future__ import print_function
 #> \file
 #> \author Soroush Safaei
 #> \brief This is an example program to solve 1D Transient Navier-Stokes 
@@ -1084,10 +1085,10 @@ SolverEquationsCharacteristic.BoundaryConditionsCreateFinish()
 #================================================================================================================================
 
 # Solve the problem
-print "Solving problem..."
+print("Solving problem...")
 Problem.Solve()
-print "Problem solved!"
-print "#"
+print("Problem solved!")
+print("#")
 
 #================================================================================================================================
 #  Data Analysis
@@ -1175,10 +1176,10 @@ if (lengthFlag):
         elementNumber[i] = i
         elementLength[i] = Length1 + Length2
         elementLength[0] = elementLength[i]
-        print "Element %1.0f" %elementNumber[i], 
-        print "Length: %1.1f" %elementLength[i],
-        print "Length1: %1.1f" %Length1,
-        print "Length2: %1.1f" %Length2
+        print("Element %1.0f" %elementNumber[i])
+        print("Length: %1.1f" %elementLength[i])
+        print("Length1: %1.1f" %Length1)
+        print("Length2: %1.1f" %Length2)
     maxElementLength = max(elementLength)*Xs
     minElementLength = min(elementLength)*Xs
     print("Max Element Length: %1.3f" % maxElementLength)
@@ -1197,6 +1198,6 @@ if (lengthFlag):
 #  Finish Program
 #================================================================================================================================
 
-print "#"
-print "Program successfully completed."
+print("#")
+print("Program successfully completed.")
 

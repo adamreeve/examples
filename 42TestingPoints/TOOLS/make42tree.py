@@ -182,7 +182,7 @@ class makeScriptFuncs(object):
             
             # This method did not work, need to read more help
             # os.chmod('run42.sh', stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-            os.chmod('run42.sh', 0755)
+            os.chmod('run42.sh', 0o755)
             # Neither does this
             # subprocess.call('chmod +x run42.sh')
         

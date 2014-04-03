@@ -1,3 +1,4 @@
+from __future__ import print_function
 import hashlib
 import sys
 import commands
@@ -17,18 +18,18 @@ def checkFile(filename, compiler):
   md5actual =  md5sum(filename)
   md5expected =  md5sum(expectedfile)
   if md5actual == md5expected :
-    print "LagrangeSimplexMesh - " + filename + " check succeeded."
+    print("LagrangeSimplexMesh - " + filename + " check succeeded.")
     return 0
   else :
-    print "LagrangeSimplexMesh - " + filename + " check FAILED!."
+    print("LagrangeSimplexMesh - " + filename + " check FAILED!.")
     return 1
   
 
 if len(sys.argv)!=2 :
-  print "Invalid number of arguments"
+  print("Invalid number of arguments")
   sys.exit(1)
 name = sys.argv[1]
-print commands.getoutput(name)
+print(commands.getoutput(name))
 namelist = string.split(name,'-')
 compiler = namelist[len(namelist)-1]
 
